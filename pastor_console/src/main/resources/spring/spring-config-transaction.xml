@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+
+	 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd"
+       default-autowire="byName">
+
+    <!-- 事务配置 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="surveyMysqlDataSource"/>
+    </bean>
+
+    <!-- 事务配置: 事务通知 -->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="select*" read-only="true"/>
+            <tx:method name="get*" read-only="true"/>
+            <tx:method name="load*" read-only="true"/>
+            <tx:method name="find*" read-only="true"/>
+            <tx:method name="query*" read-only="true"/>
+            <tx:method name="*" propagation="REQUIRED"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <!-- Spring AOP config -->
+    <bean id="sysLogAspect" class="com.jd.survey.monitor.aop.SysLogAspect">
+        <property name="maxAlarmMS" value="${survey.aop.maxAlarmMS.key}"/>
+    </bean>
+    <aop:config>
+        <!-- 切入点 -->
+        <aop:pointcut id="servicePointcut" expression="execution(* com.jd.survey.transaction.*.*(..)) || execution(* com.jd.survey.transaction.*.*Service.*(..)) || execution(* com.jd.survey.*.transaction.*.*(..))"/>
+        <aop:advisor pointcut-ref="servicePointcut" advice-ref="txAdvice"/>
+        <aop:aspect ref="sysLogAspect"/>
+    </aop:config>
+
+</beans>

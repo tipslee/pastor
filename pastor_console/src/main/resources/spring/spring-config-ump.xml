@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd"
+       default-autowire="byName">
+
+    <bean id="umpService" class="com.jd.survey.monitor.ump.impl.UMPServiceImpl">
+        <property name="projectName" value="${survey.ump.project.name}"/>
+        <property name="aliveKey" value="${survey.ump.alive.key}"/>
+        <property name="jvmKey" value="${survey.ump.jvm.key}"/>
+        <property name="methodMoniterList" value="${survey.ump.methodMoniterList}"/>
+        <property name="businessKey" value="${survey.ump.business.key}"/>
+    </bean>
+    <bean class="com.jd.survey.monitor.ump.SystemInit" init-method="init" lazy-init="false"/>
+
+</beans>

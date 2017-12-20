@@ -1,0 +1,512 @@
+
+
+#**
+ * enum message
+ *
+ * Macro to translate a enum into a message.
+ *#
+#macro( enumMessage $enum )
+#set( $enum_fullname = $enum.getClass().getName()+'.'+$enum.name() )
+$springMacroRequestContext.getMessage($enum_fullname)
+#end
+
+#**
+ * enum message
+ *
+ * Macro to translate a enum into a message.
+ * using the given default text if no message found.
+ *#
+#macro( enumMessageText $enum $text)
+#set( $enum_fullname = $enum.getClass().getName()+'.'+$enum.name() )
+$springMacroRequestContext.getMessage($enum_fullname, $text)
+#end
+
+#**
+ * port from springFormSingleSelect macro.
+ * formSingleSelect for enum instance, which must have value() method.
+ * @see com.jd.common.context.Convertable
+ *
+ * Show a selectbox (dropdown) input element allowing a single value to be chosen
+ * from a list of options.
+ *
+ * The null check for $status.value leverages Velocity's 'quiet' notation rather
+ * than the more common #if($status.value) since this method evaluates to the
+ * boolean 'false' if the content of $status.value is the String "false" - not
+ * what we want.
+ *
+ * @param $inst a enum instance, which contain all the available options through enum.values()
+ * @param $name the name of the field
+ * @param empty prompt text
+ * @param attributes any additional attributes for the element (such as class
+ *    or CSS styles or size
+*#
+#macro( enumFormSingleSelect $inst $name $empty $attributes )
+    <select id="$name" name="$name" ${attributes}>
+        #foreach($option in $inst.values())
+            <option value="$!option.value()"
+            #if("$!inst.value()" == "$!option.value()")
+                selected="selected"
+            #end>
+            #enumMessageText($option, $empty)</option>
+        #end
+    </select>
+#end
+
+
+#macro (markup $tag $visible $body $attributes)
+#if($visible)
+<${tag}#foreach($entry in $attributes.entrySet()) ${entry.key}="${entry.value}"#end
+#if(!$body) /#end>
+#end
+#if($body)$!bodyContent#if($visible)</${tag}>#end
+#end
+#end
+
+#**
+ * latform Status Desc
+ *
+ * Macro to show desc by platform id and status id.
+ *#
+#macro( showPlanStatus $platId $id )
+    #if($platId == 1)
+    	#if($id == 21)
+	          有效
+	    #elseif($id == 22)
+	          处于暂停时段
+	    #elseif($id == 23)
+	          暂停推广
+	    #elseif($id == 24)
+	          推广计划预算不足
+	    #elseif($id == 25)
+	          账户预算不足
+	    #end
+    #elseif($platId == 2)
+        #if($id == 21)
+        有效
+        #elseif($id == 22)
+        未到启用日期
+        #elseif($id == 23)
+        已超过截止日期
+        #elseif($id == 24)
+        预算不足
+        #elseif($id == 25)
+        未知状态
+        #else
+        #end
+    #elseif($platId == 3)
+        #if($id == 11)
+	          正常
+	    #elseif($id == 12)
+	          暂停
+	    #end
+    #elseif($platId == 4)
+        #if($id == 41)
+        有效
+        #elseif($id == 42)
+        不在推广时段
+        #elseif($id == 43)
+        推广计划暂停
+        #elseif($id == 44)
+        推广计划预算不足
+        #elseif($id == 45)
+        帐户预算不足
+        #elseif($id == 46)
+        不在推广日期
+        #elseif($id == 47)
+        未知状态
+        #end
+    #end
+#end
+
+#**
+ * latform Status Desc
+ *
+ * Macro to show desc by platform id and status id.
+ *#
+#macro( showAdgroupStatus $platId $id )
+    #if($platId == 1)
+    	#if($id == 31)
+	          有效
+	    #elseif($id == 32)
+	          暂停推广
+	    #elseif($id == 33)
+	          推广计划暂停推广
+	    #end
+    #elseif($platId == 2)
+        #if($status == 23)
+        有效
+        #elseif($status == 21)
+        批准
+        #elseif($status == 24)
+        儿童不宜
+        #elseif($status == 25)
+        成人内容
+        #elseif($status == 26)
+        待审核
+        #elseif($status == 29)
+        审核中
+        #elseif($status == 22)
+        审核不通过
+        #elseif($status == 27)
+        未知状态
+        #else
+        #end
+    #elseif($platId == 3)
+        #if($id == 21)
+	          正常
+	    #elseif($id == 22)
+	          暂停
+	    #elseif($id == 23)
+	          推广计划暂停
+	    #end
+    #elseif($platId == 4)
+        #if($id == 41)
+        有效
+        #elseif($id == 42)
+        推广组暂停
+        #elseif($id == 43)
+        推广计划暂停
+        #elseif($id == 44)
+        未知状态
+        #end
+    #end
+#end
+
+#**
+ * Creative Status Desc
+ *
+ * Macro to show desc by platform id and status id.
+ *#
+#macro( showCreativeStatus $platId $status )
+    #if($platId == 1)
+    	#if($status == 51)
+	          有效
+	    #elseif($status == 52)
+	          暂停推广
+	    #elseif($status == 53)
+	         不宜推广
+	    #elseif($status == 54)
+	          待激活
+	    #elseif($status == 55)
+	          审核中
+	    #elseif($status == 56)
+	         部分无效
+	    #else
+	    #end
+    #elseif($platId == 2)
+        #if($status == 23)
+        有效
+        #elseif($status == 21)
+        批准
+        #elseif($status == 24)
+        儿童不宜
+        #elseif($status == 25)
+        成人内容
+        #elseif($status == 26)
+        待审核
+        #elseif($status == 29)
+        审核中
+        #elseif($status == 22)
+        审核不通过
+        #elseif($status == 27)
+        未知状态
+        #else
+        #end
+    #elseif($platId == 3)
+        #if($status ==41)
+                    审核未通过
+        #elseif($status ==42)
+                    暂停
+        #elseif($status ==43)
+                    审核中
+        #elseif($status ==44)
+                    正常
+        #elseif($status ==45)
+                    移动显示URL无效
+        #else
+	    #end
+    #elseif($platId == 4)
+        #if($status == 11)
+        有效
+        #elseif($status == 12)
+        暂停
+        #elseif($status == 13)
+        审核拒绝
+        #elseif($status == 14)
+        待审核
+        #elseif($status == 15)
+        修改待审核
+        #elseif($status == 16)
+        未知状态
+        #end
+    #end
+#end
+
+#**
+ * Kerword Status Desc
+ *
+ * Macro to show desc by platform id and status id.
+ *#
+#macro( showKerwordStatus $platId $status )
+    #if($platId == 1)
+    	#if($status == 41)
+	          有效
+	    #elseif($status == 42)
+	          暂停推广
+	    #elseif($status == 43)
+	         不宜推广
+	    #elseif($status == 44)
+	          搜索无效
+	    #elseif($status == 45)
+	          待激活
+	    #elseif($status == 46)
+	          审核中
+	    #elseif($status == 47)
+	          搜索量过低
+	    #elseif($status == 48)
+	          部分无效
+	    #elseif($status == 49)
+	          计算机搜索无效
+	    #elseif($status == 50)
+	          移动搜索无效
+	    #end
+    #elseif($platId == 2)
+        #if($status == 23)
+        有效
+        #elseif($status == 21)
+        批准
+        #elseif($status == 24)
+        儿童不宜
+        #elseif($status == 25)
+        成人内容
+        #elseif($status == 26)
+        待审核
+        #elseif($status == 29)
+        审核中
+        #elseif($status == 22)
+        审核不通过
+        #elseif($status == 27)
+        未知状态
+        #else
+        #end
+    #elseif($platId == 3)
+        #if($status == 31)
+	          审核未通过
+	    #elseif($status == 32)
+	          暂停
+	    #elseif($status == 33)
+	          审核中
+	    #elseif($status == 34)
+	          搜索无效
+	    #elseif($status == 35)
+	           正常
+	    #end
+    #elseif($platId == 4)
+        #if($status == 41)
+        有效
+        #elseif($status == 42)
+        暂停
+        #elseif($status == 43)
+        审核拒绝
+        #elseif($status == 44)
+        待审核
+        #elseif($status == 45)
+        审核中
+        #elseif($status == 46)
+        搜索无效
+        #elseif($status == 47)
+        未知状态
+        #end
+    #end
+#end
+
+#**
+ * pause desc
+ *
+ * Macro to show desc by pause id, 0:启用;  1:暂停
+ *#
+#macro( showPauseDesc $id )
+	#if($id == 1)
+	暂停
+	#else
+	启用
+	#end
+#end
+
+#**
+ * showProb desc
+ *
+ * Macro to show desc by showProb id.  1:优选; 2:轮显
+ *#
+
+#macro( showProbDesc $id )
+	#if($id == 1)
+	优选
+	#elseif($id == 2)
+	轮展
+	#end
+#end
+
+#**
+ * showProb desc
+ *
+ * Macro to show desc by platform and matchType id.
+ *#
+#macro( showMatchType $platform $id )
+	#if($id == 1)
+          精确
+    #elseif($id == 2)
+          短语
+    #elseif($id == 3)
+          广泛
+    #end
+#end
+
+#**
+ *show task operate option by taskStatus  & id
+ *#
+#macro( showOperateOption $status $id)
+    #if($status == 1)
+    <a href = "/task/cancel?id=$id">取消</a>
+    <a href = "/task/exenow?id=$id">优先执行</a>
+    #elseif($status == 2)
+    <a href = "javascript:void(0);" onclick="showTaskDetail($id);">查看</a>
+    <a href = "/task/fail?id=$id">强制失败</a>
+    #elseif($status == 3)
+    <a href = "javascript:void(0);" onclick="showTaskDetail($id);">查看</a>
+    #elseif($status == 4)
+    <a href = "/task/cancel?id=$id">取消</a>
+    <a href = "javascript:void(0);" onclick="showTaskDetail($id);">查看</a>
+    #elseif($status == 5)
+    <a href = "/task/reexe?id=$id">重新执行</a>
+    <a href = "javascript:void(0);" onclick="showTaskDetail($id);">查看</a>
+    #elseif($status == 6)
+    <a href = "/task/reexe?id=$id">重新执行</a>
+    <a href = "javascript:void(0);" onclick="showTaskDetail($id);">查看</a>
+    #elseif($status == 7)
+    <a href = "/task/reexe?id=$id">重新执行</a>
+    <a href = "javascript:void(0);" onclick="showTaskDetail($id);">查看</a>
+    #elseif($status == 8)
+    <a href = "javascript:void(0);" onclick="showTaskDetail($id);">查看</a>
+    #end
+#end
+
+
+#macro( showInterceptReasonDesc $id )
+	#if($id == 1)
+        触发同一IP点击所有广告最大次数
+	#elseif($id == 2)
+        触发同一IP点击同一广告最大次数
+	#end
+#end
+
+#macro( showInterceptRuleDesc $id )
+	#if($id == 1)
+	    同一IP点击所有广告次数
+	#elseif($id == 2)
+	    同一IP点击同一个广告次数
+	#end
+#end
+
+
+##分页
+#macro(showNewPage $page $pageURL $name)
+    #if(!$name)
+        #set($name='dataDiv')
+    #end
+    #if($!{page} != "")
+    <div class="page">
+        <div class="fr">
+            #if($page.firstPage == false)
+                <a class="pre" href="javascript:void(0);" onclick="numberPage(${page.previousPage},'$!pageURL','$!name');">&lt;&nbsp;上页</a>
+                <a href="javascript:void(0);" onclick="numberPage(1,'$!pageURL','$!name')">1</a>
+            #end
+            #set($pagePos = 2) ##当前页的尾巴长度
+            #if($!page.currentPage>$pagePos+2) <span class="apostrophe">...</span> #end ##显示前面的省略号
+            #foreach($i in [$pagePos..1]) ##增加前面的尾巴
+                #if($!page.currentPage - $!i > 1)
+                    #set($pageIndex= $!page.currentPage - $i)
+                    <a href="javascript:void(0);" onclick="numberPage($pageIndex,'$!pageURL','$!name')">$pageIndex</a>
+                #end
+            #end
+            <a class="current">$!page.currentPage</a> ##显示当前页号
+            #foreach($i in [1..$pagePos]) ##增加后面的尾巴
+                #if($!page.pageCount - $!page.currentPage - $!i > 0)
+                    #set($pageIndex= $!page.currentPage + $!i)
+                    <a href="javascript:void(0);" onclick="numberPage($pageIndex,'$!pageURL','$!name')">$pageIndex</a>
+                #end
+            #end
+            #if($!page.pageCount - $!page.currentPage > $pagePos+1) <span class="apostrophe">...</span> #end ##显示后面的省略号
+            #if($page.hasNextPage())
+                <a href="javascript:void(0);" onclick="numberPage($page.pageCount,'$!pageURL','$!name')">$page.pageCount</a>
+                <a class="next mr10" href="javascript:void(0);" onclick="numberPage(${page.nextPage},'$!pageURL','$!name')">下页 &nbsp;&gt;</a>
+            #end
+            <span class="mr10 fl">总数$!{page.totalCount}</span>
+        </div>
+        <div class="fl ml10">
+            每页显示
+        ##<input id="page-pageSize" class="textField4 textC ml5 mr5"  type="text" value="$!{page.pageSize}" onmouseout="recoverNum($!{page.pageSize},this)" onKeyup="setPageNum($!{page.pageSize},this,'$!pageURL','$!name',event);"/>
+            <select id="page-pageSize$!name" style="width:60px; class="select12 ml5" onchange="numberPage(1,'$!pageURL','$!name');">
+                <option value="20" #if($!{page.pageSize}==20) selected="selected" #end>20条</option>
+                <option value="50" #if($!{page.pageSize}==50) selected="selected" #end>50条</option>
+                <option value="100" #if($!{page.pageSize}==100) selected="selected" #end>100条</option>
+            </select>
+        </div>
+    </div><!--page end-->
+    #end
+#end
+
+#macro( showMatchTypeDec $id )
+	#if($id == 1)
+          精确
+    #elseif($id == 2)
+          短语
+    #elseif($id == 3)
+          广泛
+    #else
+        $id
+    #end
+#end
+
+#macro( showCalculateTypeDec $id )
+	#if($id == 1)
+          一次性
+    #elseif($id == 2)
+          持续性
+    #else
+        $id
+    #end
+#end
+
+#macro( showTimeUnitTypeDec $id )
+	#if($id == 1)
+        日
+    #elseif($id == 2)
+        周
+    #elseif($id == 3)
+        月
+    #elseif($id == 4)
+        季
+    #elseif($id == 5)
+        总汇
+    #else
+        $id
+    #end
+#end
+
+#macro( showReportTypeDec $id )
+	#if($id == 1)
+        关键词报表
+    #elseif($id == 2)
+        单元报表
+    #elseif($id == 3)
+        计划报表
+    #elseif($id == 4)
+        账户报表
+    #elseif($id == 5)
+        单元归类报表
+    #else
+        $id
+    #end
+#end
+

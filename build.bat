@@ -1,0 +1,1 @@
+mvn clean install eclipse:eclipse -DdownloadSource=true -Dmaven.test.skip=true -Ptest

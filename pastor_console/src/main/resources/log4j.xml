@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "log4j.dtd">
+<log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'>
+    <!-- console -->
+    <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d [%7r] %6p - %30.30c - %m \n"/>
+        </layout>
+    </appender>
+
+    <!-- all -->
+    <appender name="FILE-ALL" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+        <param name="file" value="${survey.log.path}/survey.log"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d [%7r] %6p - %30.30c - %m \n"/>
+        </layout>
+    </appender>
+
+    <!-- dao -->
+    <appender name="FILE-DAO" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+        <param name="file" value="${survey.log.path}/survey-dao.log"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d [%7r] %6p - %30.30c - %m \n"/>
+        </layout>
+    </appender>
+
+    <!-- sql -->
+    <appender name="FILE-SQL" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+        <param name="Append" value="true"/>
+        <param name="file" value="${survey.log.path}/survey-sql.log"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d [%7r] %6p - %30.30c - %m \n"/>
+        </layout>
+    </appender>
+
+    <!-- veloctiy -->
+    <appender name="FILE-VELOCITY" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+        <param name="Append" value="true"/>
+        <param name="file" value="${survey.log.path}/survey-velocity.log"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d [%7r] %6p - %30.30c - %m \n"/>
+        </layout>
+    </appender>
+
+
+    <!-- BUSINESS -->
+    <appender name="FILE-BUSINESS" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+        <param name="Append" value="true"/>
+        <param name="file" value="${survey.log.path}/survey-business.log"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d [%7r] %6p - %30.30c - %m \n"/>
+        </layout>
+    </appender>
+
+    <!-- worker -->
+    <appender name="FILE-WORKER" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+        <param name="Append" value="true"/>
+        <param name="file" value="${survey.log.path}/survey-worker.log"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d [%7r] %6p - %30.30c - %m \n"/>
+        </layout>
+    </appender>
+
+    <!-- service -->
+    <appender name="FILE-SERVICE" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+        <param name="Append" value="true"/>
+        <param name="file" value="${survey.log.path}/survey-service.log"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d [%7r] %6p - %30.30c - %m \n"/>
+        </layout>
+    </appender>
+
+    <!-- rpc service -->
+    <appender name="FILE-RPC" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+        <param name="Append" value="true"/>
+        <param name="file" value="${survey.log.path}/survey-rpc.log"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d [%7r] %6p - %30.30c - %m \n"/>
+        </layout>
+    </appender>
+
+
+    <!-- aop -->
+    <appender name="FILE-AOP" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+        <param name="Append" value="true"/>
+        <param name="file" value="${survey.log.path}/survey-aop.log"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d %6p - %m \n"/>
+        </layout>
+    </appender>
+
+
+    <!-- aop-->
+    <category name="com.jd.survey.monitor.aop" additivity="false">
+        <level value="${survey.log.level}"/>
+        <appender-ref ref="FILE-AOP"/>
+    </category>
+    <!-- dao-->
+    <category name="com.jd.survey.dao" additivity="false">
+        <level value="${survey.log.level}"/>
+        <appender-ref ref="FILE-DAO"/>
+    </category>
+
+
+    <!-- rpc service -->
+    <category name="com.jd.survey.service.rpc" additivity="false">
+        <level value="${survey.log.level}"/>
+        <appender-ref ref="FILE-RPC"/>
+    </category>
+
+
+    <!-- BUSINESS category-->
+    <category name="com.jd.survey.business" additivity="false">
+        <level value="${survey.log.level}"/>
+        <appender-ref ref="FILE-BUSINESS"/>
+    </category>
+
+    <!-- service category-->
+    <category name="com.jd.survey.service" additivity="false">
+        <level value="${survey.log.level}"/>
+        <appender-ref ref="FILE-SERVICE"/>
+    </category>
+
+    <!-- worker category-->
+    <category name="com.jd.survey.worker" additivity="false">
+        <level value="${survey.log.level}"/>
+        <appender-ref ref="FILE-WORKER"/>
+    </category>
+
+    <!-- ibatis category -->
+    <category name="org.apache.ibatis" additivity="false">
+        <level value="${survey.log.level}"/>
+        <appender-ref ref="FILE-SQL"/>
+    </category>
+    <category name="org.mybatis" additivity="false">
+        <level value="${survey.log.level}"/>
+        <appender-ref ref="FILE-SQL"/>
+    </category>
+    <category name="com.ibatis" additivity="false">
+        <level value="${survey.log.level}"/>
+        <appender-ref ref="FILE-SQL"/>
+    </category>
+    <!-- sql category -->
+    <category name="java.sql" additivity="false">
+        <priority value="${survey.log.level}"/>
+        <appender-ref ref="FILE-SQL"/>
+    </category>
+    <category name="com.mysql" additivity="false">
+        <level value="${survey.log.level}"/>
+        <appender-ref ref="FILE-SQL"/>
+    </category>
+
+    <!-- veloctity category -->
+    <category name="org.apache.velocity" additivity="false">
+        <priority value="${survey.log.level}"/>
+        <appender-ref ref="FILE-VELOCITY"/>
+    </category>
+
+    <root>
+        <priority value="${survey.log.level}"/>
+        <appender-ref ref="FILE-ALL"/>
+    </root>
+</log4j:configuration>
