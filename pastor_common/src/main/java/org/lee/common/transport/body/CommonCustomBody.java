@@ -1,7 +1,7 @@
 package org.lee.common.transport.body;
 
 
-import org.lee.common.exception.RemotingCommmonCustomException;
+import org.lee.common.exception.remoting.RemotingCommmonCustomException;
 
 /**
  * 

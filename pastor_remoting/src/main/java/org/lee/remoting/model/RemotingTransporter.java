@@ -114,4 +114,20 @@ public class RemotingTransporter extends ByteHolder {
     public void setCustomHeader(CommonCustomBody customHeader) {
         this.customHeader = customHeader;
     }
+
+    public static RemotingTransporter newInstance(long id, byte sign, byte type, byte[] bytes) {
+        RemotingTransporter remotingTransporter = new RemotingTransporter();
+        remotingTransporter.setCode(sign);
+        remotingTransporter.setTransporterType(type);
+        remotingTransporter.setOpaque(id);
+        remotingTransporter.setBytes(bytes);
+        return remotingTransporter;
+    }
+
+    @Override
+    public String toString() {
+        return "RemotingTransporter [code=" + code + ", customHeader=" + customHeader + ", timestamp=" + timestamp + ", opaque=" + opaque
+                + ", transporterType=" + transporterType + "]";
+    }
+
 }

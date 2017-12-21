@@ -1,4 +1,4 @@
-package org.lee.common.exception;
+package org.lee.common.exception.remoting;
 
 /**
  * 
