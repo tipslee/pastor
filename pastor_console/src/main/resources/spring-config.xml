@@ -5,7 +5,6 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd"
        default-autowire="byName">
 	<!-- 注解扫描包 -->
-	<context:component-scan base-package="com.jd.**" />
     <aop:aspectj-autoproxy proxy-target-class="true"/>
 
 	<!-- 加载属性文件 -->
@@ -13,21 +12,8 @@
 		<property name="locations">
 			<list>
 			    <value>classpath:config/common.properties</value>
-	    		<value>classpath:config/db.properties</value>
-	    		<value>classpath:config/login.properties</value>
-	    		<value>classpath:config/ump.properties</value>
-	    		<value>classpath:config/important.properties</value>
 			</list>
 		</property>
 	</bean>
 
-	<!-- 导入分类配置 -->
-	<import resource="spring/springmvc-servlet.xml" />
-	<import resource="spring/spring-config-business.xml" />
-	<import resource="spring/spring-config-dao.xml" />
-	<import resource="spring/spring-config-datasource-dbcp.xml" />
-	<import resource="spring/spring-config-rpc.xml" />
-	<import resource="spring/spring-config-service.xml" />
-    <import resource="spring/spring-config-ump.xml" />
-    <import resource="spring/spring-config-transaction.xml" />
 </beans>
