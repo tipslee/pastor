@@ -1,4 +1,4 @@
-package org.laopopo.common.exception.remoting;
+package org.lee.common.exception.remoting;
 
 /**
  * 

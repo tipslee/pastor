@@ -8,6 +8,7 @@ import org.lee.common.exception.remoting.RemotingSendRequestException;
 import org.lee.common.exception.remoting.RemotingTimeoutException;
 import org.lee.common.protocal.PastorProtocol;
 import org.lee.common.util.Pair;
+import org.lee.remoting.model.NettyInactiveProcessor;
 import org.lee.remoting.model.NettyRequestProcessor;
 import org.lee.remoting.model.RemotingResponse;
 import org.lee.remoting.model.RemotingTransporter;
@@ -35,10 +36,13 @@ public abstract class NettyRemotingBase {
     //默认的Netty Request处理器Pair
     protected Pair<NettyRequestProcessor, ExecutorService> defaultRequestProcessor;
 
+    protected Pair<NettyInactiveProcessor, ExecutorService> defaultInactiveProcessor;
+
     protected final Map<Byte, Pair<NettyRequestProcessor, ExecutorService>> processorTable
             = new HashMap<Byte, Pair<NettyRequestProcessor, ExecutorService>>();
 
 
+    protected ExecutorService publicExecutor;
     /**
      * 设置钩子函数，增加处理前后操作
      *
@@ -58,7 +62,8 @@ public abstract class NettyRemotingBase {
      * @throws RemotingSendRequestException
      * @throws InterruptedException
      */
-    protected RemotingTransporter invokeSync(final Channel channel, final RemotingTransporter request, final long timeoutMills) throws RemotingTimeoutException, RemotingSendRequestException, InterruptedException {
+    protected RemotingTransporter invokeSync(final Channel channel, final RemotingTransporter request, final long timeoutMills)
+            throws RemotingTimeoutException, RemotingSendRequestException, InterruptedException {
         try {
             final RemotingResponse response = new RemotingResponse(request.getOpaque(), timeoutMills, null);
             responseMap.put(request.getOpaque(), response);
@@ -135,6 +140,7 @@ public abstract class NettyRemotingBase {
 
     /**
      * 服务端处理request
+     *
      * @param ctx
      * @param requestTransporter
      */
@@ -184,4 +190,26 @@ public abstract class NettyRemotingBase {
             }
         }
     }
+
+    protected void processInactiveChannel(final ChannelHandlerContext ctx) throws Exception {
+        final Pair<NettyInactiveProcessor, ExecutorService> pair = defaultInactiveProcessor;
+        if (pair != null) {
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        pair.getKey().processInactiveChannel(ctx);
+                    } catch (Exception e) {
+                        logger.error("server occor exception [{}]",e.getMessage());
+                    }
+                }
+            };
+            try {
+                pair.getValue().submit(runnable);
+            } catch (Exception e) {
+                logger.error("server occor exception [{}]",e.getMessage());
+            }
+        }
+    }
+
 }

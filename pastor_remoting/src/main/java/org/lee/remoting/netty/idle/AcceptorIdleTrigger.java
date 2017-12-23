@@ -14,7 +14,7 @@ import org.lee.common.exception.remoting.RemotingNoSighException;
  * @modifytime
  */
 @ChannelHandler.Sharable
-public class AcceptorIdleHandler extends ChannelInboundHandlerAdapter {
+public class AcceptorIdleTrigger extends ChannelInboundHandlerAdapter {
 
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
         if (evt instanceof IdleStateEvent) {

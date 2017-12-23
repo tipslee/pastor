@@ -1,1 +1,1 @@
-org.lee.common.serialization.protostuff.ProtoStuffSerializer
+org.lee.common.serialization.proto.ProtoStuffSerializer
