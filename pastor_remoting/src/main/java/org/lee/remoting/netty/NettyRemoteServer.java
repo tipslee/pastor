@@ -112,6 +112,7 @@ public class NettyRemoteServer extends NettyRemotingBase implements RemoteServer
         defaultEventExecutorGroup = new DefaultEventExecutorGroup(Constants.AVAILABLE_PROCESSORS,
                 new ThreadFactory() {
                     private AtomicInteger threadIndex = new AtomicInteger(0);
+
                     @Override
                     public Thread newThread(Runnable r) {
                         return new Thread(r, "NettyServerWorkerThread_" + this.threadIndex.incrementAndGet());
@@ -126,10 +127,19 @@ public class NettyRemoteServer extends NettyRemotingBase implements RemoteServer
                         new IdleStateHandler(READER_IDLE_TIME_SECONDS, 0, 0, TimeUnit.SECONDS),
                         idleStateTrigger,
                         new RemoteTransporterDecoder()
-                        ,new RemoteTransporterEncoder()
-                        ,new NettyServerHandler());
+                        , new RemoteTransporterEncoder()
+                        , new NettyServerHandler());
             }
         });
+        try {
+            logger.info("netty bind [{}] serverBootstrap start...", this.nettyServerConfig.getListenPort());
+            this.serverBootstrap.bind().sync();
+            logger.info("netty start success at port [{}]", this.nettyServerConfig.getListenPort());
+        } catch (InterruptedException e1) {
+            logger.error("start serverBootstrap exception [{}]", e1.getMessage());
+            throw new RuntimeException("this.serverBootstrap.bind().sync() InterruptedException", e1);
+        }
+
     }
 
     @Override
@@ -143,16 +153,14 @@ public class NettyRemoteServer extends NettyRemotingBase implements RemoteServer
             if (this.defaultEventExecutorGroup != null) {
                 this.defaultEventExecutorGroup.shutdownGracefully();
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             logger.error("NettyRemotingServer shutdown exception, ", e);
         }
 
         if (this.publicExecutor != null) {
             try {
                 this.publicExecutor.shutdown();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 logger.error("NettyRemotingServer shutdown exception, ", e);
             }
         }
@@ -208,7 +216,7 @@ public class NettyRemoteServer extends NettyRemotingBase implements RemoteServer
     class NettyServerHandler extends SimpleChannelInboundHandler<RemotingTransporter> {
 
         @Override
-        protected void channelRead0 (ChannelHandlerContext ctx, RemotingTransporter msg) throws Exception {
+        protected void channelRead0(ChannelHandlerContext ctx, RemotingTransporter msg) throws Exception {
             processMessageReceived(ctx, msg);
         }
 
