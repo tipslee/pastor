@@ -210,7 +210,7 @@ public class NettyRemoteServer extends NettyRemotingBase implements RemoteServer
 
     @Override
     public RemotingTransporter invokeSync(Channel channel, RemotingTransporter request, long timeoutMills) throws RemotingTimeoutException, RemotingSendRequestException, InterruptedException {
-        return invokeSync(channel, request, timeoutMills);
+        return super.invokeSync(channel, request, timeoutMills);
     }
 
     class NettyServerHandler extends SimpleChannelInboundHandler<RemotingTransporter> {

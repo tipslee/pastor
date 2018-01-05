@@ -9,7 +9,7 @@
     </appender>
 
     <root>
-        <priority value="${survey.log.level}"/>
+        <priority value="INFO"/>
         <appender-ref ref="FILE-ALL"/>
     </root>
 </log4j:configuration>
