@@ -12,6 +12,8 @@ import org.xerial.snappy.Snappy;
 
 import java.util.List;
 
+import static org.lee.common.protocal.PastorProtocol.HEARTBEAT;
+
 /**
  * @author liqiang
  * @description 协议解码器
@@ -32,7 +34,6 @@ public class RemoteTransporterDecoder extends ReplayingDecoder<RemoteTransporter
 
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
-        checkpoint(State.HEADED_MAGIC);
         switch (state()) {
             case HEADED_MAGIC:
                 checkMagic(in.readShort());
@@ -53,14 +54,17 @@ public class RemoteTransporterDecoder extends ReplayingDecoder<RemoteTransporter
                 header.setCompress(in.readByte());
                 checkpoint(State.BODY);
             case BODY:
-                int bodyLength = checkBodyLength(in.readableBytes());
+                if (header.sign() == HEARTBEAT) {
+                    break;
+                }
+                int bodyLength = checkBodyLength(header.bodyLength());
                 byte[] bytes = new byte[bodyLength];
                 in.readBytes(bytes);
                 if (PastorProtocol.COMPRESS == header.compress()) {
                     //解压
                     bytes = Snappy.uncompress(bytes);
                 }
-                RemotingTransporter transporter = RemotingTransporter.newInstance(header.id(), header.type(), header.sign(), bytes);
+                RemotingTransporter transporter = RemotingTransporter.newInstance(header.id(), header.sign(), header.type(), bytes);
                 out.add(transporter);
                 break;
             default:
