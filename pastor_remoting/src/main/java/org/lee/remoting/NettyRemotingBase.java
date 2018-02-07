@@ -43,6 +43,7 @@ public abstract class NettyRemotingBase {
 
 
     protected ExecutorService publicExecutor;
+
     /**
      * 设置钩子函数，增加处理前后操作
      *
@@ -165,9 +166,7 @@ public abstract class NettyRemotingBase {
                                 @Override
                                 public void operationComplete(ChannelFuture future) throws Exception {
                                     if (!future.isSuccess()) {
-                                        if (!future.isSuccess()) {
-                                            logger.error("fail send response ,exception is [{}]", future.cause().getMessage());
-                                        }
+                                        logger.error("fail send response ,exception is [{}]", future.cause().getMessage());
                                     }
                                 }
                             });
@@ -200,14 +199,14 @@ public abstract class NettyRemotingBase {
                     try {
                         pair.getKey().processInactiveChannel(ctx);
                     } catch (Exception e) {
-                        logger.error("server occor exception [{}]",e.getMessage());
+                        logger.error("server occor exception [{}]", e.getMessage());
                     }
                 }
             };
             try {
                 pair.getValue().submit(runnable);
             } catch (Exception e) {
-                logger.error("server occor exception [{}]",e.getMessage());
+                logger.error("server occor exception [{}]", e.getMessage());
             }
         }
     }
