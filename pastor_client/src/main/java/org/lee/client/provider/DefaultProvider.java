@@ -56,6 +56,11 @@ public class DefaultProvider implements Provider {
 
     @Override
     public void start() throws InterruptedException, RemotingException {
+        logger.info("---------Provider Start--------------");
+        //编织服务
+        this.publishRemotingTransporters = providerController.getLocalServerWrapperManager().wrapperRegisterInfo(this.exposePort, this.obj);
+
+
 
     }
 
