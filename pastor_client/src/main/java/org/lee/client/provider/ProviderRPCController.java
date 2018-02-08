@@ -11,6 +11,12 @@ import org.lee.remoting.model.RemotingTransporter;
  */
 public class ProviderRPCController {
 
+    private DefaultProvider defaultProvider;
+
+    public ProviderRPCController(DefaultProvider defaultProvider) {
+        this.defaultProvider = defaultProvider;
+    }
+
     public void handleRPCRequest(RemotingTransporter request, Channel channel) {
 
     }

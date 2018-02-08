@@ -8,7 +8,7 @@ import org.lee.common.exception.remoting.RemotingSendRequestException;
 import org.lee.common.exception.remoting.RemotingTimeoutException;
 import org.lee.common.protocal.PastorProtocol;
 import org.lee.common.util.Pair;
-import org.lee.remoting.model.NettyInactiveProcessor;
+import org.lee.remoting.model.NettyChannelInactiveProcessor;
 import org.lee.remoting.model.NettyRequestProcessor;
 import org.lee.remoting.model.RemotingResponse;
 import org.lee.remoting.model.RemotingTransporter;
@@ -36,7 +36,7 @@ public abstract class NettyRemotingBase {
     //默认的Netty Request处理器Pair
     protected Pair<NettyRequestProcessor, ExecutorService> defaultRequestProcessor;
 
-    protected Pair<NettyInactiveProcessor, ExecutorService> defaultInactiveProcessor;
+    protected Pair<NettyChannelInactiveProcessor, ExecutorService> defaultInactiveProcessor;
 
     protected final Map<Byte, Pair<NettyRequestProcessor, ExecutorService>> processorTable
             = new HashMap<Byte, Pair<NettyRequestProcessor, ExecutorService>>();
@@ -191,7 +191,7 @@ public abstract class NettyRemotingBase {
     }
 
     protected void processInactiveChannel(final ChannelHandlerContext ctx) throws Exception {
-        final Pair<NettyInactiveProcessor, ExecutorService> pair = defaultInactiveProcessor;
+        final Pair<NettyChannelInactiveProcessor, ExecutorService> pair = defaultInactiveProcessor;
         if (pair != null) {
             Runnable runnable = new Runnable() {
                 @Override

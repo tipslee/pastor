@@ -21,7 +21,7 @@ import org.lee.common.util.Pair;
 import org.lee.remoting.ConnectionUtils;
 import org.lee.remoting.NettyRemotingBase;
 import org.lee.remoting.RpcHook;
-import org.lee.remoting.model.NettyInactiveProcessor;
+import org.lee.remoting.model.NettyChannelInactiveProcessor;
 import org.lee.remoting.model.NettyRequestProcessor;
 import org.lee.remoting.model.RemotingTransporter;
 import org.lee.remoting.netty.decode.RemoteTransporterDecoder;
@@ -333,7 +333,7 @@ public class NettyRemoteClient extends NettyRemotingBase implements RemoteClient
     }
 
     @Override
-    public void registerInvalidProcessor(NettyInactiveProcessor processor, ExecutorService executorService) {
+    public void registerInvalidProcessor(NettyChannelInactiveProcessor processor, ExecutorService executorService) {
         if (executorService == null) {
             executorService = publicExecutor;
         }

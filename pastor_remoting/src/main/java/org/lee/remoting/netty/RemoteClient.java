@@ -3,7 +3,7 @@ package org.lee.remoting.netty;
 import org.lee.common.exception.remoting.RemotingException;
 import org.lee.common.exception.remoting.RemotingSendRequestException;
 import org.lee.common.exception.remoting.RemotingTimeoutException;
-import org.lee.remoting.model.NettyInactiveProcessor;
+import org.lee.remoting.model.NettyChannelInactiveProcessor;
 import org.lee.remoting.model.NettyRequestProcessor;
 import org.lee.remoting.model.RemotingTransporter;
 
@@ -22,7 +22,7 @@ public interface RemoteClient extends BaseRemotingService {
 
     public void registerProcessor(final byte requestCode, NettyRequestProcessor processor, ExecutorService executorService);
 
-    public void registerInvalidProcessor(NettyInactiveProcessor processor, ExecutorService executorService);
+    public void registerInvalidProcessor(NettyChannelInactiveProcessor processor, ExecutorService executorService);
 
     public boolean isChannelWritable(String address);
 

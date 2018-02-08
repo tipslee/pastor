@@ -4,7 +4,7 @@ import io.netty.channel.Channel;
 import org.lee.common.exception.remoting.RemotingSendRequestException;
 import org.lee.common.exception.remoting.RemotingTimeoutException;
 import org.lee.common.util.Pair;
-import org.lee.remoting.model.NettyInactiveProcessor;
+import org.lee.remoting.model.NettyChannelInactiveProcessor;
 import org.lee.remoting.model.NettyRequestProcessor;
 import org.lee.remoting.model.RemotingTransporter;
 
@@ -18,11 +18,11 @@ import java.util.concurrent.ExecutorService;
  */
 public interface RemoteServer extends BaseRemotingService {
 
-    void registerRequestDefaultProcessor(NettyRequestProcessor processor, ExecutorService executorService);
+    void registerDefaultProcessor(NettyRequestProcessor processor, ExecutorService executorService);
 
     void registerProcessorTable(NettyRequestProcessor processor, ExecutorService executorService, Byte requestCode);
 
-    void registerInvalidChannelProcessor(NettyInactiveProcessor processor, ExecutorService executorService);
+    void registerInvalidChannelProcessor(NettyChannelInactiveProcessor processor, ExecutorService executorService);
 
     Pair<NettyRequestProcessor, ExecutorService> getProcessor(Byte requestCode);
 

@@ -8,7 +8,7 @@ import io.netty.channel.ChannelHandlerContext;
  * @time 2017年12月22日
  * @modifytime
  */
-public interface NettyInactiveProcessor {
+public interface NettyChannelInactiveProcessor {
 
     public void processInactiveChannel(ChannelHandlerContext ctx) throws Exception;
 }
