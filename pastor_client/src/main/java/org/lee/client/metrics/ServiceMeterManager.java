@@ -27,6 +27,70 @@ public class ServiceMeterManager {
         return (100 *(callCount - failCount ) / callCount);
     }
 
+    /**
+     * 增加一次调用次数
+     * @param serviceName
+     */
+    public static void incrementCallTimes(String serviceName){
+
+        Meter meter = globalMeterManager.get(serviceName);
+
+        if(meter == null){
+            meter = new Meter(serviceName);
+            globalMeterManager.put(serviceName, meter);
+        }
+        meter.getCallCount().incrementAndGet();
+
+    }
+
+    /**
+     * 增加一次调用失败次数
+     * @param serviceName
+     */
+    public static void incrementFailTimes(String serviceName){
+
+        Meter meter = globalMeterManager.get(serviceName);
+
+        if(meter == null){
+            meter = new Meter(serviceName);
+            globalMeterManager.put(serviceName, meter);
+        }
+        meter.getFailedCount().incrementAndGet();
+    }
+
+    /**
+     * 累加某个服务的调用时间
+     * @param serviceName
+     * @param byteSize
+     */
+    public static void incrementTotalTime(String serviceName,Long timecost){
+
+        Meter meter = globalMeterManager.get(serviceName);
+
+        if(meter == null){
+            meter = new Meter(serviceName);
+            globalMeterManager.put(serviceName, meter);
+        }
+        meter.getTotalCallTime().addAndGet(timecost);
+    }
+
+    /**
+     * 累加某个服务的请求入参的大小
+     * @param serviceName
+     * @param byteSize
+     */
+    public static void incrementRequestSize(String serviceName,int byteSize){
+
+        Meter meter = globalMeterManager.get(serviceName);
+
+        if(meter == null){
+            meter = new Meter(serviceName);
+            globalMeterManager.put(serviceName, meter);
+        }
+        meter.getTotalRequestSize().addAndGet(byteSize);
+    }
+
+
     public static ConcurrentMap<String, Meter> getGlobalMeterManager() {
         return globalMeterManager;
     }

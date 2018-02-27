@@ -172,12 +172,8 @@ public class DefaultProvider implements Provider {
         // provider端连接registry链接inactive的时候要进行的操作(设置registry的状态为不健康，告之registry重新发送服务注册信息)
         this.nettyRemotingClient.registerInvalidProcessor(new DefaultProviderInactiveProcessor(this), null);
         // provider端作为netty的server端去等待调用者连接的处理器，此处理器只处理RPC请求
-        //TODO 处理prc请求Processor，未写
         this.nettyRemotingServer.registerDefaultProcessor(new DefaultProviderRPCProcessor(this), this.remotingExecutor);
         this.nettyRemotingVipServer.registerDefaultProcessor(new DefaultProviderRPCProcessor(this), this.remotingVipExecutor);
-
-
-
     }
 
 
